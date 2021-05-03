@@ -4,10 +4,12 @@
     <title>Client</title>
   </head>
   <body>
-    <div></div>
+    <div>
+      <video autoplay muted id="video" style="background-color: black"></video>
+    </div>
     <script>
       (async () => {
-        const socket = new WebSocket("ws://localhost:8888");
+        const socket = new WebSocket("wss://ad694ddd1ddf.ngrok.io");
         await new Promise((r) => (socket.onopen = r));
 
         const offer = await new Promise(
@@ -23,11 +25,8 @@
           }
         };
         peer.ontrack = async (e) => {
-          const video = document.createElement("video");
-          document.body.appendChild(video);
-          console.log(e);
+          const video = document.getElementById("video");
           video.srcObject = e.streams[0];
-          await video.play();
         };
 
         await peer.setRemoteDescription(offer);
